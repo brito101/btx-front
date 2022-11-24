@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { PageContainer, PageTitle } from "../../components/main"
+import { ErrorMessage, PageContainer, PageTitle } from "../../components/main"
 import useApi from "../../helpers/BtxAPI"
 import { doLogin } from "../../helpers/AuthHandler"
 
@@ -25,29 +25,49 @@ const SignIn = () => {
       doLogin(json.token, remember)
       window.location.href = "/"
     }
+
+    setDisabled(false)
   }
 
   return (
     <PageContainer>
       <PageTitle>Login</PageTitle>
       <PageArea>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <form onSubmit={handleSubmit}>
           <label className='area'>
             <div className='area-title'>E-mail</div>
             <div className='area-input'>
-              <input type='email' disabled={disabled} />
+              <input
+                type='email'
+                disabled={disabled}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
           </label>
           <label className='area'>
             <div className='area-title'>Senha</div>
             <div className='area-input'>
-              <input type='password' disabled={disabled} />
+              <input
+                type='password'
+                disabled={disabled}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </div>
           </label>
           <label className='area'>
             <div className='area-title'>Lembrar senha</div>
             <div className='area-input'>
-              <input type='checkbox' disabled={disabled} />
+              <input
+                type='checkbox'
+                disabled={disabled}
+                checked={remember}
+                onChange={(e) => setRemember(!remember)}
+              />
             </div>
           </label>
           <label className='area'>
