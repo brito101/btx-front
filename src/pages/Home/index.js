@@ -3,12 +3,14 @@ import { PageArea, SearchArea } from "./styled"
 import { PageContainer } from "../../components/main"
 import useApi from "../../helpers/BtxAPI"
 import { Link } from "react-router-dom"
+import Aditem from "../../components/partials/Aditem"
 
 const Home = () => {
   const api = useApi()
 
   const [stateList, setStateList] = useState([])
   const [categories, setCategories] = useState([])
+  const [adsList, setAdsList] = useState([])
 
   useEffect(() => {
     const getStates = async () => {
@@ -25,6 +27,18 @@ const Home = () => {
       setCategories(cats)
     }
     getCategories()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    const getRecentAds = async () => {
+      const json = await api.getAds({
+        sort: "desc",
+        limit: 8,
+      })
+      setAdsList(json)
+    }
+    getRecentAds()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -56,7 +70,33 @@ const Home = () => {
         </PageContainer>
       </SearchArea>
       <PageContainer>
-        <PageArea>...</PageArea>
+        <PageArea>
+          <h2>Anúncios Recentes</h2>
+          <div className='list'>
+            {adsList.map((i, k) => (
+              <Aditem key={k} data={i} />
+            ))}
+          </div>
+          <Link to='/ads' className='seeAllLink'>
+            Ver todos
+          </Link>
+          <hr />
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
+            consectetur diam sit amet convallis imperdiet. Suspendisse vel diam
+            eu nisi sollicitudin pellentesque. Morbi vulputate turpis at justo
+            sodales, eu efficitur ante convallis. Cras mattis, justo et ultrices
+            iaculis, massa est volutpat neque, vitae porttitor enim mauris nec
+            ante. Aenean tempor tellus ac pulvinar rutrum. Ut eleifend ut augue
+            nec maximus. Vivamus accumsan efficitur viverra. Nulla finibus risus
+            neque, vel facilisis velit pharetra et. Class aptent taciti sociosqu
+            ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc
+            ut blandit ante, vitae bibendum augue. Pellentesque facilisis cursus
+            lorem, eu ultrices dui efficitur eu. Pellentesque posuere dolor nec
+            lorem mollis ultrices. Pellentesque id tincidunt elit, bibendum
+            sollicitudin ipsum.
+          </p>
+        </PageArea>
       </PageContainer>
     </>
   )
