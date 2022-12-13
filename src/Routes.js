@@ -6,6 +6,8 @@ import NotFound from "./pages/NotFound"
 import SignIn from "./pages/SignIn"
 import SignUP from "./pages/SignUp"
 import AdPAge from "./pages/AdPage"
+import ProtectedRoute from "./components/ProtectedRoute"
+import AddAd from "./pages/AddAd"
 
 const Router = () => {
   return (
@@ -15,6 +17,15 @@ const Router = () => {
       <Route exact path='/signin' element={<SignIn />} />
       <Route exact path='/signup' element={<SignUP />} />
       <Route exact path='/ad/:id' element={<AdPAge />} />
+      <Route
+        exact
+        path='/ad/add'
+        element={
+          <ProtectedRoute>
+            <AddAd />
+          </ProtectedRoute>
+        }
+      />
       <Route path='*' element={<NotFound />} />
     </Routes>
   )
