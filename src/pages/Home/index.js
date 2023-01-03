@@ -36,7 +36,7 @@ const Home = () => {
         sort: "desc",
         limit: 8,
       })
-      setAdsList(json)
+      setAdsList(json.ads)
     }
     getRecentAds()
     // eslint-disable-next-line react-hooks/exhaustive-deps
