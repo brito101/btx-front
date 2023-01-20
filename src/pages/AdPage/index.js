@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom"
 import { Slide } from "react-slideshow-image"
 import "react-slideshow-image/dist/styles.css"
 import { PageContainer } from "../../components/main"
-import Aditem from "../../components/partials/Aditem"
+import AdItem from "../../components/partials/AdItem"
 import useApi from "../../helpers/BtxAPI"
 
 import { PageArea, Fake, OthersArea, BreadCrumb } from "./styled"
@@ -122,7 +122,7 @@ const AdPAge = () => {
             <h2>Outras ofertas do vendedor</h2>
             <div className='list'>
               {adInfo.others.map((i, k) => (
-                <Aditem key={k} data={i} />
+                <AdItem key={k} data={i} />
               ))}
             </div>
           </>

@@ -3,7 +3,7 @@ import { PageArea, SearchArea } from "./styled"
 import { PageContainer } from "../../components/main"
 import useApi from "../../helpers/BtxAPI"
 import { Link } from "react-router-dom"
-import Aditem from "../../components/partials/Aditem"
+import AdItem from "../../components/partials/AdItem"
 
 const Home = () => {
   const api = useApi()
@@ -74,7 +74,7 @@ const Home = () => {
           <h2>Anúncios Recentes</h2>
           <div className='list'>
             {adsList.map((i, k) => (
-              <Aditem key={k} data={i} />
+              <AdItem key={k} data={i} />
             ))}
           </div>
           <Link to='/ads' className='seeAllLink'>

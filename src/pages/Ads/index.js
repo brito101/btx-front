@@ -3,7 +3,7 @@ import { PageArea } from "./styled"
 import { PageContainer } from "../../components/main"
 import useApi from "../../helpers/BtxAPI"
 import { useSearchParams } from "react-router-dom"
-import Aditem from "../../components/partials/Aditem"
+import AdItem from "../../components/partials/AdItem"
 
 let timer
 
@@ -31,15 +31,20 @@ const Ads = () => {
   const [loading, setLoading] = useState(true)
   const [adsTotal, setAdsTotal] = useState(0)
   const [pageCount, setPageCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const getAdsList = async () => {
     setLoading(true)
+    const limit = 15
+    let offset = (currentPage - 1) * limit
+
     const json = await api.getAds({
       sort: "desc",
-      limit: 2,
+      limit,
       q,
       cat,
       state,
+      offset,
     })
     setAdsList(json.ads)
     setAdsTotal(json.total)
@@ -54,6 +59,12 @@ const Ads = () => {
       setPageCount(0)
     }
   }, [adsTotal, adsList])
+
+  useEffect(() => {
+    setResultOpacity(0.3)
+    getAdsList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage])
 
   useEffect(() => {
     let queryString = []
@@ -75,6 +86,7 @@ const Ads = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     timer = setTimeout(getAdsList, 1000)
     setResultOpacity(0.3)
+    setCurrentPage(1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, cat, state, setSearchParams])
 
@@ -145,18 +157,24 @@ const Ads = () => {
         </div>
         <div className='rightSide'>
           <h2>Resultados</h2>
-          {loading && <div className='listWarning'>Carregando...</div>}
+          {loading && adsList.length === 0 && (
+            <div className='listWarning'>Carregando...</div>
+          )}
           {!loading && adsList.length === 0 && (
             <div className='listWarning'>Nenhum resultado encontrado</div>
           )}
           <div className='list' style={{ opacity: resultOpacity }}>
             {adsList.map((i, k) => (
-              <Aditem key={k} data={i} />
+              <AdItem key={k} data={i} />
             ))}
           </div>
           <div className='pagination'>
             {pagination.map((i, k) => (
-              <div className='pageItem' key={k}>
+              <div
+                onClick={() => setCurrentPage(i)}
+                className={i === currentPage ? "pageItem active" : "pageItem"}
+                key={k}
+              >
                 {i}
               </div>
             ))}
